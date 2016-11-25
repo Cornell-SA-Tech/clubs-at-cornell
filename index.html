@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Cornell Fall ClubFest 2016</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap Core CSS -->
+        <link href="css/stylish-portfolio.css" rel="stylesheet"><!-- Custom CSS -->
+        <!-- Custom Fonts -->
+        <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+        <!-- jQuery -->
+        <script src="js/jquery.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+        <!--Font Awesome for logos-->
+        <script src="https://use.fontawesome.com/0e046ac868.js"></script>
+    </head>
+    <body>
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Logo </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-right">
+                <li class='active'><a href="index.html">Home</a></li>
+                <li><a href="search.html">Search</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="#">News</a></li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+
+         <!-- Header -->
+        <header id="top" class="header overlay" >
+            <div class="text-vertical-center">
+                <h1>Clubs @ Cornell</h1>
+                <h3>A celebration of student organizations</h3>
+                <br>
+                <br>
+                <br>
+                <div class="row">
+                    <div class='container'>
+                        <div class='col-md-4'>
+                            <h3>Something</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</p>
+                        </div>
+                        <div class='col-md-4'>
+                            <h3>Something</h3>
+                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias</p>
+                        </div>
+                        <div class='col-md-4'>
+                            <h3>Something</h3>
+                            <p>quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-6 text-left">
+                        <h4>Clubs at Cornell 2016</h4>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <ul class="list-inline text-right">
+                            <li>
+                                <a href="https://www.facebook.com/CornellWelcomeWeekend/?hc_location=ufi"><i class="fa fa-facebook fa-fw fa-2x"></i></a>
+                            </li>
+                            <li>
+                                <a href="http://orgsync.rso.cornell.edu/org/welcomeweekend/home"><i class="fa fa-globe fa-fw fa-2x"></i></a>
+                            </li>
+                            <li>
+                                <a href="cornellsatech@gmail.com"><i class="fa fa-envelope fa-fw fa-2x"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <a id="to-top" href="#top" class="btn btn-dark btn-lg"><i class="fa fa-chevron-up fa-fw fa-2x"></i></a>
+        </footer>
+
+        <!-- Custom Theme JavaScript -->
+        <script>
+        // Disable Google Maps scrolling
+        // See http://stackoverflow.com/a/25904582/1607849
+        // Disable scroll zooming and bind back the click event
+        var onMapMouseleaveHandler = function(event) {
+            var that = $(this);
+            that.on('click', onMapClickHandler);
+            that.off('mouseleave', onMapMouseleaveHandler);
+            that.find('iframe').css("pointer-events", "none");
+        }
+        var onMapClickHandler = function(event) {
+                var that = $(this);
+                // Disable the click handler until the user leaves the map area
+                that.off('click', onMapClickHandler);
+                // Enable scrolling zoom
+                that.find('iframe').css("pointer-events", "auto");
+                // Handle the mouse leave event
+                that.on('mouseleave', onMapMouseleaveHandler);
+            }
+            // Enable map zooming with mouse scroll when the user clicks the map
+        $('.map').on('click', onMapClickHandler);
+
+        //search funtionality
+        $('#query').keyup(function() {
+            $search = $(this).val()
+            $request = $.ajax ({
+                url: 'http://clubfest-1865.rhcloud.com/search.php?query=' + $search,
+                type: 'get',
+                dataType: 'json',
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+
+            $request.success(function(data) {
+                var clubs = data;
+
+                //clear results if they exist
+                $('#results').empty();
+                $('#message').empty();
+
+                //format the club data into a string
+                $strClubs = "";
+                $message = "";
+
+                if (clubs != null && clubs.length > 0) {
+                    $strClubs = "<div class='row' data-row='1'>";
+                    for (i = 0; i < clubs.length; i++) {
+
+                        //select a random color for clubs without images
+                        $input = ["ffffff", "ccccff", "ffccff", "b3ffe6", "ffccb3", "ffe066"];
+                        $rand = Math.floor(Math.random() * $input.length);
+
+                        function pad(str, numSpaces) {
+                            return ("+").repeat(numSpaces - 1) + str + ("+").repeat(numSpaces);
+
+                        }
+                        var clubName = (clubs[i].name).length < 15 ? pad(escape(clubs[i].name), Math.round((15 - (clubs[i].name).length)/2)) : escape(clubs[i].name);
+
+                        var imgSource = clubs[i].image_url=='' ? "http://dummyimage.com/700x400/" + $input[$rand] + "/000/png/&text=" + clubName : clubs[i].image_url;
+
+
+                //      //create basic club template
+                        $strClubs = $strClubs +
+                            "<div class='col-md-3 portfolio-item'><a class='fancybox'  href='#club" + clubs[i].id+ "'><img class='img-responsive' src='" + imgSource + "'></a><a class='fancybox' href='#club" + clubs[i].id + "'><h3>" + clubs[i].name+ "</h3></a></div>";
+
+                //      //create fancybox to show on click
+                        $strClubs += "<div style='display:none'><div id='club" + clubs[i].id  + "'><div class='row addMargin'><div class='col-sm-7 portfolio-item' align='center'><img class='img-responsive' src='" + imgSource + "'></div><div class='col-sm-5' style='text-align:center;'><div class='row'><h3 class='bigTexth3' align='left'>" + clubs[i].name + "</h3><p class='bigText' align='left'>" + clubs[i].description + "</p></div><div class='col-sm-4'><a target='_blank' href='" + clubs[i].website_url + "'><i class='fa fa-globe fa-2x' aria-hidden='true'></i></a></div><div class='col-sm-4'><div class='col-sm-12'><a href='mailto:"+  clubs[i].listserv_email+"'><i class='fa fa-envelope fa-2x' aria-hidden='true'></i></a></div><div class='col-sm-12'>  " + clubs[i].listserv_email + "</div></div><div class='col-sm-4'><a  target='_blank' href='" + clubs[i].fb_url + "'><i class='fa fa-facebook-square fa-2x' aria-hidden='true'></i></a></div></div></div></div></div>";
+
+                        //close row
+                        if ((i+1) % 4 == 0) {
+                            $strClubs += "</div><div class='row' data-row='" + ((i+1)/ 4) + "'>";
+                        }
+                    }
+
+                    $strClubs += "</div><div class='clearfix'></div><!-- /.clearfix -->";
+                } else {
+                  $message = '<p>No results found. Please try again.</p>';
+                }
+
+                $('#results').html($strClubs);
+                $('#message').html($message);
+
+            });
+        });
+
+        //trigger keyup also on load
+        $(document).ready(function() {
+          $('#query').trigger('keyup');
+        });
+        </script>
+        <script type="text/javascript">
+          $(document).ready(function() {
+            $(".fancybox").fancybox();
+          });
+        </script>
+    </body>
+</html>
